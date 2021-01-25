@@ -1,0 +1,29 @@
+{
+    "links": {
+        "discord":"https://discord.gamerpilsen.no/",
+        "gamer.no":"https://www.gamer.no/klubber/gamer-pilsen/158063",
+        "twitch":"https://www.twitch.tv/gamerpilsen",
+        "server1":"steam://connect/bootcamp.gamerpilsen.no:27030",
+        "server2":"steam://connect/51.174.208.108:27015",
+        "server3":"steam://connect/79.160.186.47:27015",
+        "hlstats":"https://stats.gamerpilsen.no/",
+        "påmelding_telialigaen":"https://forms.gle/2UavDKcRAhj5d6Nz8",
+        "aktuelt":"https://gamerpilsen.no/aktuelt/?feed=atom",
+        "gp.no":"https://gamerpilsen.no",
+        "gamerpilsen.no":"https://gamerpilsen.no"
+    },
+    "servers": {
+        "1":{
+            "ip":"bootcamp.gamerpilsen.no",
+            "port":27030
+        },
+        "2":{
+            "ip":"51.174.208.108",
+            "port":27015
+        },
+        "3":{
+            "ip":"79.160.186.47",
+            "port":27015
+        }
+    }
+}
