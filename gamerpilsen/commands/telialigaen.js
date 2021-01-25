@@ -1,6 +1,6 @@
 
 const axios = require('axios');
-const JSAsciiTable = require('../js-ascii-table.js');
+const JSAsciiTable = require('../libs/js-ascii-table.js');
 const { description } = require('./args-info.js');
 
 module.exports = {

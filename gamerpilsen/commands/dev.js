@@ -5,7 +5,7 @@ module.exports = {
 	name: 'dev',
     description: 'Developer tools',
     args: true,
-    arguments: ['maps']
+    arguments: ['maps'],
     usage: '[maps]',
     // aliases: ['maps'],
     execute(message, args) {
