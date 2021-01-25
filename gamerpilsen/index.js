@@ -53,6 +53,9 @@ client.on('message', message => {
     if (command.args && !args.length) {
         let reply = `You didn't provice any arguments, ${message.author}!`;
 
+        if (command.arguments.length) {
+            reply += `\nArguments: ${command.arguments}`;
+        }
         if (command.usage) {
             reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
         }
