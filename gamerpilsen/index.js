@@ -16,26 +16,18 @@ const config = require('./config.json');
 const secrets = require('./secrets.json');
 const { prefix } = require('./config.json');
 
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
+// const dev = new Discord.User(client, {
+//     id:"152026317016137728",
+//     username: "Gabbeh",
+//     discriminator: "0547",
+// });
+
+client.once('ready', () => {
+    console.log(`\n\n\nLogged in as ${client.user.tag}!\n\n\n`);
 });
 
-// gamerpilsen.lenker
+// message command handler
 client.on('message', message => {
-
-    // console.debug(message.author);
-    // console.debug(message.author.id);
-
-    const gabbeh = new Discord.User(client, {
-        id:"152026317016137728",
-        username: "Gabbeh",
-        discriminator: "0547",
-        avatar: "4a6046c7fa45946b856667e4e697c801"
-    });
-    // console.log("gabbeh");
-    // console.log(gabbeh);
-    // console.log(gabbeh.fetch());
-
 
     // Commands must start with prefix, and not be sent by bot.
     if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -51,7 +43,7 @@ client.on('message', message => {
     if (!command) return;
 
     if (command.args && !args.length) {
-        let reply = `You didn't provice any arguments, ${message.author}!`;
+        let reply = `You didn't provide any arguments, ${message.author}!`;
 
         if (command.arguments.length) {
             reply += `\nArguments: ${command.arguments}`;

@@ -1,55 +1,56 @@
 
 const Discord = require('discord.js');
 const Gamedig = require('gamedig');
-const gpconfig = require('./gp.json');
+const steam_servers_config = require('./steam_servers.json');
 const mapsconfig = require('./maps.json');
 const config = require('../config.json');
 
 module.exports = {
 	name: 'server',
-    aliases: ['boot', 'bootn', 'booten'],
+    aliases: ['server', 'servers', 'boot', 'bootn', 'booten'],
     description: 'Information about the server provided.',
     args: true,
     arguments: [1,2,3],
     usage: '<1/2/3>',
 	execute(message, args) {
 
-		if (args[0] in gpconfig.servers) {
+		if (args[0] in mapsconfig) {
+
+            console.log(`args: ${args}`);
 
             let server_state = "";
-            console.log(gpconfig.servers);
-            console.log(gpconfig.servers[args[0]]);
-            console.log(gpconfig.servers[args[0]]["ip"]);
-            console.log(gpconfig.servers[args[0]]["port"]);
+            console.log(steam_servers_config);
+            console.log(steam_servers_config[args[0]]);
+            console.log(steam_servers_config[args[0]]["ip"]);
+            console.log(steam_servers_config[args[0]]["port"]);
+
+            let host = steam_servers_config[args[0]]["ip"];
+            let port = steam_servers_config[args[0]]["port"]
+
+            console.log(host);
+            console.log(port);
+
             Gamedig.query({
                 type: 'csgo',
-                host: gpconfig.servers[args[0]]["ip"],
-                port: gpconfig.servers[args[0]]["port"],
-                debug: false
+                host: host,
+                port: port,
+                debug: true
             }).then((state) => {
+
+                console.log('JA GAMEDIG FUNKER');
+
                 server_state = state;
                 console.log('state:');
                 console.log(state);
 
                 const embed = new Discord.MessageEmbed()
-                    .setColor('#0099ff')
+                    .setColor(config.colors.gp_orange)
                     .setTitle(state["name"])
-                    // .setURL(`steam://connect/${state["connect"]}`)
-                    // .setAuthor('Gabbeh#0547', 'https://i.imgur.com/haAgtfq.png', 'https://gabbeh.no/')
-                    // .setDescription('Some description here')
-                    .setThumbnail('https://raw.githubusercontent.com/vgalisson/csgo-map-icons/master/80x80/collection_icon_de_dust2.png')
-                    // .addFields(
-                    //     { name: 'Regular field title', value: 'Some value here' },
-                    //     { name: '\u200B', value: '\u200B' },
-                    //     { name: 'Inline field title', value: 'Some value here', inline: true },
-                    //     { name: 'Inline field title', value: 'Some value here', inline: true },
-                    // )
+                    // .setThumbnail('https://raw.githubusercontent.com/vgalisson/csgo-map-icons/master/80x80/collection_icon_de_dust2.png')
                     .addField('Map', state["map"], true)
                     .addField('Players', `${state["players"].length} / ${state["maxplayers"]}`, true)
                     .addField('Connect', `steam://connect/${state["connect"]}`)
-                    // .setImage('https://i.imgur.com/wSTFkRM.png')
                     .setTimestamp()
-                    // .setFooter('https://gabbeh.no/', 'https://i.imgur.com/haAgtfq.png');
 
                 console.log(embed);
                 
@@ -59,13 +60,16 @@ module.exports = {
                     if (mapconfig['name'] == state["map"]){
                         console.log(mapconfig);
                         embed.setImage(mapconfig['img']);
+                        embed.setThumbnail(mapconfig['icon']);
                         break;
                     }
                 }
                 
                 return message.channel.send({ embed: embed });
             }).catch((error) => {
-                console.log(message);
+
+                console.log('GAMEDIG FEILER');
+                // console.log(message);
                 console.log(error);
                 return message.channel.send(`${message}\n${error}`);
             })

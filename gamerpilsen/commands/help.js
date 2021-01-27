@@ -3,38 +3,46 @@ const { prefix } = require('../config.json');
 
 module.exports = {
     name: 'help',
-    description: 'List all of my commands or info about a specific command.',
-    aliases:  ['commands'],
-    usage: '[command name]',
+    description: 'Oversikt over alle kommandoer',
+    aliases:  ['hjelp'],
+    usage: '<kommando>',
     cooldown: 5,
     execute(message, args) {
+
+        console.log('help');
+        console.log(message.content);
+        console.log(args);
+        
         const data = [];
         const { commands } = message.client;
 
+        // HELP
         if (!args.length) {
-            data.push('Here\'s a list of all my commands:');
-            console.log('commands:');
-            console.log(commands);
-            console.log('commands.map:');
-            commands.map(
-                command => {
-                    console.log(command)
-                    data.push(`\`${command.name}\``);
-                    data.push(`${command.description}`);
-                     
-                }
-            );
+            data.push('Her er alle kommandoer:');
+
+            for (const [_, command] of commands) {
+                console.log('command');
+                console.log(command);
+
+                // check for user perms
+                if (command.users && command.users.length && !(command.users.includes(message.author.tag))) {
+                    continue;
+                };
+
+                data.push(`\`${command.name}\`: ${command.description}`);
+            };
+            
             data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
 
-            return message.author.send(data, { split: true})
-                .then(() => {
-                    if (message.channel.type === 'dm') return;
-                    message.reply('I\'ve sent you a DM with all my commands!');
-                })
-                .catch(error => {
-                    console.error(`Could not send help DM to ${message.author.tag}.\n`, error);
-                    message.reply('It seems like I can\'t DM you! Do you have DMs disabled?');
-                });
+            return message.reply(data, { split: true});
+                // .then(() => {
+                //     if (message.channel.type === 'dm') return;
+                //     message.reply('I\'ve sent you a DM with all my commands!');
+                // })
+                // .catch(error => {
+                //     console.error(`Could not send help DM to ${message.author.tag}.\n`, error);
+                //     message.reply('It seems like I can\'t DM you! Do you have DMs disabled?');
+                // });
         }
 
         const name = args[0].toLowerCase();

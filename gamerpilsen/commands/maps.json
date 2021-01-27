@@ -1,13 +1,13 @@
 [
     {
         "img": "https://steamuserimages-a.akamaihd.net/ugc/884099481704455488/D05FB512CE0288DA621E4076B4E10E705B09E522/?imw=200&imh=112&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-		"icon": "",
+		"icon": "https://i.imgur.com/9c1y9gE.png",
         "name": "cs_assault",
         "title": "Assault"
     },
     {
         "img": "https://steamuserimages-a.akamaihd.net/ugc/884099387636138080/CB1B4067D1E87B7D2A13096912EE0F8F89907273/?imw=200&imh=112&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-		"icon": "",
+		"icon": "https://i.imgur.com/smdBdH5.png",
         "name": "de_aztec",
         "title": "Aztec"
     },
@@ -25,32 +25,32 @@
     },
     {
         "img": "https://steamuserimages-a.akamaihd.net/ugc/666829239974957588/C390A1BB5CDFFDC7793B98143EB1177ACE38EC91/?imw=200&imh=112&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-		"icon": "",
+		"icon": "https://i.imgur.com/wYcVKm2.png",
         "name": "de_cbbl",
         "title": "Cobblestone"
     },
     {
         "img": "https://steamuserimages-a.akamaihd.net/ugc/884099387636142158/952C5F54CE8C1836C4775EEC6A3D4581AC96F83E/?imw=200&imh=112&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-		"icon": "",
+		"icon": "https://i.imgur.com/q1Hr5b7.png",
         "name": "de_dust",
         "title": "Dust"
     },
     {
         "img": "https://steamuserimages-a.akamaihd.net/ugc/884099387636144833/64CCC9FAC3B2294B270D7F566478E9AE363DD445/?imw=200&imh=112&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-		"icon": "",
+		"icon": "https://i.imgur.com/3ROBS40.png",
         "name": "de_dust2",
         "title": "Dust 2"
     },
     {
         "img": "https://steamuserimages-a.akamaihd.net/ugc/884099387636152068/745C3B9DB3D39D69283BA75045BA175A150211A6/?imw=200&imh=112&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-		"icon": "",
+		"icon": "https://i.imgur.com/DAG72FU.png",
         "name": "de_inferno",
         "title": "Inferno"
     },
     
     {
         "img": "https://steamuserimages-a.akamaihd.net/ugc/884099481704487049/47425465FBEF230EA597F260AE32AE7F0AA0F6A3/?imw=200&imh=112&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-		"icon": "",
+		"icon": "https://i.imgur.com/x3WAsPo.png",
         "name": "cs_italy",
         "title": "Italy"
     },
@@ -63,13 +63,13 @@
     },
     {
         "img": "https://steamuserimages-a.akamaihd.net/ugc/848074387985927776/695608CA60F8481803F84B79787C08454F0E2FB1/?imw=200&imh=112&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-		"icon": "",
+		"icon": "https://i.imgur.com/2ABXhWh.png",
         "name": "cs_militia",
         "title": "Militia"
     },
     {
         "img": "https://steamuserimages-a.akamaihd.net/ugc/882984447753219894/D947D4FA6CC0CA4D3DE8D67D8B40A3EFC462EE19/?imw=200&imh=112&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-		"icon": "",
+		"icon": "https://i.imgur.com/ZkaJy29.png",
         "name": "de_mirage",
         "title": "Mirage"
     },
@@ -81,19 +81,19 @@
     },
     {
         "img": "https://steamuserimages-a.akamaihd.net/ugc/884099387636154888/390DAE2D78345C553F5F667D06D66962B79557FF/?imw=200&imh=112&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-		"icon": "",
+		"icon": "https://i.imgur.com/0YUGtBX.png",
         "name": "de_nuke",
         "title": "Nuke"
     },
     {
         "img": "https://steamuserimages-a.akamaihd.net/ugc/884099387636313020/C3724AB6908CA9DD37365B2391209AAF1951566D/?imw=200&imh=112&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-		"icon": "",
+		"icon": "https://i.imgur.com/7yOLDMd.png",
         "name": "cs_office",
         "title": "Office"
     },
     {
         "img": "https://steamuserimages-a.akamaihd.net/ugc/666829239975015371/4690D66902FABBC0C9A155217BDF09197D3068D7/?imw=200&imh=112&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-		"icon": "",
+		"icon": "https://i.imgur.com/G06sf34.png",
         "name": "de_overpass",
         "title": "Overpass"
     },
@@ -129,14 +129,20 @@
     },
     {
         "img": "https://steamuserimages-a.akamaihd.net/ugc/884099387636148143/2EED294549D0EFF491CDFA35FEF37F69C1D9DF2B/?imw=200&imh=112&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-		"icon": "",
+		"icon": "https://i.imgur.com/f3yyy34.png",
         "name": "de_train",
         "title": "Train"
     },
     {
         "img": "https://steamuserimages-a.akamaihd.net/ugc/884099387635965511/EBD899AB318941BBF572E7529F6404FFE88FEDDD/?imw=200&imh=112&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-		"icon": "",
+		"icon": "https://i.imgur.com/H1WJcaq.png",
         "name": "de_vertigo",
         "title": "Vertigo"
+    },
+    {
+        "img": "",
+        "icon": "https://i.imgur.com/5uwuSUQ.png",
+        "name": "de_cache",
+        "title": "Cache"
     }
 ]

@@ -1,0 +1,32 @@
+[
+    {
+        "title": "GamerPilsen.no",
+        "description": "",
+        "url": "https://gamerpilsen.no"
+    },
+    {
+        "title": "Twitch",
+        "description": "Vi streamer alle ❡p-kampene fra TeliaLigaen!",
+        "url": "https://www.twitch.tv/gamerpilsen"
+    },
+    {
+        "title": "SteamGroup",
+        "description":"Få på ❡p-taggen du og! Meld deg inn i steamgruppa og velg tag in-game.",
+        "url":"https://steamcommunity.com/groups/Counter-Pilsen"
+    },
+    {
+        "title": "Gamer.no",
+        "description": "Gamerpilsen på Gamer.no",
+        "url": "https://www.gamer.no/klubber/gamer-pilsen/158063"
+    },
+    {
+        "title": "HLstats",
+        "description": "HLStats for \"Boot 1,2,3?\"",
+        "url": "https://stats.gamerpilsen.no/"
+    },
+    {
+        "title": "PåmeldingTelialigaen",
+        "description": "GamerPilsen har meldt seg på Telialigaen! Meld deg på du og!",
+        "url": "https://forms.gle/2UavDKcRAhj5d6Nz8"
+    }
+]

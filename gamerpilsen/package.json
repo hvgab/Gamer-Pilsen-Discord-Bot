@@ -1,13 +1,15 @@
 {
   "name": "gamerpilsen-discord-bot",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Custom Discord Bot for Gamer-Pilsen",
   "main": "index.js",
   "dependencies": {
     "axios": "^0.21.1",
+    "common-tags": "^1.8.0",
     "discord.js": "^12.5.1",
     "envy": "^2.0.0",
-    "gamedig": "^2.0.24"
+    "gamedig": "^2.0.24",
+    "nodemon": "^2.0.7"
   },
   "devDependencies": {},
   "scripts": {
