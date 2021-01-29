@@ -29,6 +29,8 @@ client.once('ready', () => {
 // message command handler
 client.on('message', message => {
 
+    if ( config.env == 'dev' ) return message.reply('Jeg blir oppdatert. Snart tilbake.');
+
     // Commands must start with prefix, and not be sent by bot.
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 

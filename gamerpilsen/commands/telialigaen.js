@@ -16,7 +16,6 @@ module.exports = {
     aliases: ['telia', 'ligaen', 'tl'],
     args:true,
     arguments: ['tabeller'], //, 'terminliste', 'resultater', 'lagene'],
-    // usage: 
 
     execute(message, args) {
 
