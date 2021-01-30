@@ -45,39 +45,43 @@ async function getTabellerGP(){
             
         // filter
         if (!(season['active'] === true && season['product']['id'] == 165431)) continue;
-            
-        for (const division of season['divisions']) {
-                
-            // Get Tables axios
-            const tables = await getTables(division['id'], season['id']);
-            
-            // For each table get signups
-            for (const table of tables) {
-                for (const signup of table['signups']){
 
-                    if (signup['participant']['shortname'] == '❡p') {
-                        signupData = [
-                            division['name'],
-                            signup['placement'].toString(),
-                            signup['participant']['name'],
-                            signup['played'].toString(),
-                            signup['wins'].toString(),
-                            signup['draws'].toString(),
-                            signup['losses'].toString(),
-                            `${signup['scoreFor']}/${signup['scoreAgainst']}`,
-                            signup['penalty'].toString(),
-                            signup['bonus'].toString(),
-                            signup['points'].toString(),
-                        ]
-                        tableData.push(signupData);
+        console.log(season);
+        
+        await Promise.all(
+            season.divisions.map(async (division) => {
+                
+                const tables = await getTables(division.id, season.id);
+                for (const table of tables) {
+                    for (const signup of table['signups']){
+    
+                        if (signup['participant']['shortname'] == '❡p') {
+                            signupData = [
+                                division['name'],
+                                signup['placement'].toString(),
+                                signup['participant']['name'],
+                                signup['played'].toString(),
+                                signup['wins'].toString(),
+                                signup['draws'].toString(),
+                                signup['losses'].toString(),
+                                `${signup['scoreFor']}/${signup['scoreAgainst']}`,
+                                signup['penalty'].toString(),
+                                signup['bonus'].toString(),
+                                signup['points'].toString(),
+                            ]
+                            tableData.push(signupData);
+                        }
                     }
                 }
-            }
-        }
+            })
+        );
     }
+        
 
     console.log(`tableData is now:`);
     console.log(tableData);
+    // TODO: Sort please
+
     return tableData;
 }
 

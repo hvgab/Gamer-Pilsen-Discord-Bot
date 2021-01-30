@@ -36,7 +36,9 @@ module.exports = {
 						return message.channel.send(`\`\`\`${asciiTable}\`\`\``, {split:true});
 					})
 					.catch(function(error){
-						sendErrorToDev(message, error, client);
+						console.error(error);
+						sendErrorToDev(message, error, message.client);
+						message.reply('I made a boo-boo')
 					});
 				}
 					
