@@ -1,6 +1,6 @@
 {
   "name": "gamerpilsen-discord-bot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Custom Discord Bot for Gamer-Pilsen",
   "main": "index.js",
   "dependencies": {
