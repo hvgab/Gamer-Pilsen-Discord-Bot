@@ -7,6 +7,10 @@ For [GamerPilsen](https://gamerpilsen.no) by [Gabbeh](https://gabbeh.no)
 - Check [Telialigaen](https://telialigaen.no) stats.
 - Check CS:GO Community Server status.
 
+## How it looks
+
+![v.1.0.0-example.png](v.1.0.0-example.png)
+
 ## Run
 Start in developer mode: `node --inspect ./index.js`
 
