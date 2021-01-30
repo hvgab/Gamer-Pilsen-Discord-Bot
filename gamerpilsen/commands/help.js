@@ -29,6 +29,8 @@ module.exports = {
                     continue;
                 };
 
+                if (command.hidden) continue;
+
                 data.push(`\`${command.name}\`: ${command.description}`);
             };
             

@@ -4,6 +4,7 @@ const Gamedig = require('gamedig');
 const steam_servers_config = require('./steam_servers.json');
 const mapsconfig = require('./maps.json');
 const config = require('../config.json');
+const utils = require('../libs/utils.js');
 
 module.exports = {
 	name: 'server',
@@ -16,62 +17,41 @@ module.exports = {
 
 		if (args[0] in mapsconfig) {
 
-            console.log(`args: ${args}`);
-
-            let server_state = "";
-            console.log(steam_servers_config);
-            console.log(steam_servers_config[args[0]]);
-            console.log(steam_servers_config[args[0]]["ip"]);
-            console.log(steam_servers_config[args[0]]["port"]);
-
             let host = steam_servers_config[args[0]]["ip"];
             let port = steam_servers_config[args[0]]["port"]
-
-            console.log(host);
-            console.log(port);
 
             Gamedig.query({
                 type: 'csgo',
                 host: host,
                 port: port,
-                debug: true
-            }).then((state) => {
-
-                console.log('JA GAMEDIG FUNKER');
-
-                server_state = state;
-                console.log('state:');
-                console.log(state);
+                debug: ((config['env'] == 'dev') ? true : false),
+            }).then((server) => {
+                
+                console.log('Server:');
+                console.log(server);
 
                 const embed = new Discord.MessageEmbed()
                     .setColor(config.colors.gp_orange)
-                    .setTitle(state["name"])
-                    // .setThumbnail('https://raw.githubusercontent.com/vgalisson/csgo-map-icons/master/80x80/collection_icon_de_dust2.png')
-                    .addField('Map', state["map"], true)
-                    .addField('Players', `${state["players"].length} / ${state["maxplayers"]}`, true)
-                    .addField('Connect', `steam://connect/${state["connect"]}`)
+                    .setTitle(server["name"])
+                    .addField('Map', server["map"], true)
+                    .addField('Players', `${server["players"].length} / ${server["maxplayers"]}`, true)
+                    .addField('Connect', `steam://connect/${server["connect"]}`)
                     .setTimestamp()
 
+                console.log('Embed:');
                 console.log(embed);
                 
-                console.log(`server state map: ${server_state['map']}`);
-                for (const mapconfig of mapsconfig) {
-                    console.log(`mapconfig map: ${mapconfig['name']}`);
-                    if (mapconfig['name'] == state["map"]){
-                        console.log(mapconfig);
-                        embed.setImage(mapconfig['img']);
-                        embed.setThumbnail(mapconfig['icon']);
-                        break;
-                    }
-                }
+                mapconfig = mapsconfig.find( mapconfig => mapconfig.name == server.map );
+                embed.setThumbnail(mapconfig.icon);
+                embed.setImage(mapconfig.img);
                 
-                return message.channel.send({ embed: embed });
-            }).catch((error) => {
+                return message.reply({ embed: embed });
 
-                console.log('GAMEDIG FEILER');
-                // console.log(message);
-                console.log(error);
-                return message.channel.send(`${message}\n${error}`);
+            }).catch((error) => {
+                // TODO: Use this as a standard error handler?
+                console.error(error);
+                utils.sendErrorToDev(message, error, client);
+                message.reply('Something went wrong.');
             })
 		}
 	},

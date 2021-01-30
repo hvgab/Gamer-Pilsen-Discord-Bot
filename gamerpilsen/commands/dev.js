@@ -7,9 +7,8 @@ module.exports = {
     args: true,
     arguments: ['maps'],
     usage: '[maps]',
-    // aliases: ['maps'],
     users: ['Gabbeh#0547'],
-    // users: ['Gabbeh#0000'],
+    
     execute(message, args) {
 
         if (args[0] === 'maps') {

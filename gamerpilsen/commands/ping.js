@@ -1,8 +1,12 @@
 module.exports = {
 	name: 'ping',
 	description: 'Ping!',
-	users: [''],
+	hidden: true,
 	execute(message, args) {
-		message.channel.send('Pong.');
+		
+		message.reply('Reply Pong');
+		message.author.send('Author Pong');
+		message.channel.send('Channel Pong');
+	
 	},
 };
