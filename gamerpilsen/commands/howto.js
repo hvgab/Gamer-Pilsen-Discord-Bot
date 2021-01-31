@@ -1,13 +1,8 @@
-
 module.exports = {
-	name: 'link',
-	description: 'GP relevant links.',
+	name: "link",
+	description: "GP relevant links.",
 	arguments: arguments,
-	aliases: ['links', 'lenke', 'lenker'],
+	aliases: ["links", "lenke", "lenker"],
 	usage: "[link]",
-	execute(message, args) {
-
-        
-
-    }
-}
+	execute(message, args) {},
+};

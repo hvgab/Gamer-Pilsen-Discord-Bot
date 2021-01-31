@@ -1,28 +1,28 @@
 {
-    "season": {
-        "id": 8595,
-        "url": "https://www.telialigaen.no/api/seasons/8595"
+  "season": {
+    "id": 8595,
+    "url": "https://www.telialigaen.no/api/seasons/8595"
+  },
+  "divisions": [
+    {
+      "id": 8754,
+      "name": "5. divisjon avd. N"
     },
-    "divisions": [
-        {
-            "id": 8754,
-            "name": "5. divisjon avd. N"
-        },
-        {
-            "id": 8755,
-            "name": "5. divisjon avd. O"
-        },
-        {
-            "id": 8756,
-            "name": "5. divisjon avd. P"
-        },
-        {
-            "id": 8711,
-            "name": "6. divisjon avd. A"
-        },
-        {
-            "id": 8758,
-            "name": "6. divisjon avd. C"
-        }
-    ]
+    {
+      "id": 8755,
+      "name": "5. divisjon avd. O"
+    },
+    {
+      "id": 8756,
+      "name": "5. divisjon avd. P"
+    },
+    {
+      "id": 8711,
+      "name": "6. divisjon avd. A"
+    },
+    {
+      "id": 8758,
+      "name": "6. divisjon avd. C"
+    }
+  ]
 }

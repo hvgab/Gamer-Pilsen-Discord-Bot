@@ -1,78 +1,125 @@
-
-const Discord = require('discord.js');
-const Gamedig = require('gamedig');
-const steam_servers_config = require('./steam_servers.json');
-const mapsconfig = require('./maps.json');
-const config = require('../config.json');
+const Discord = require("discord.js");
+const Gamedig = require("gamedig");
+const steam_servers_config = require("./steam_servers.json");
+const mapsconfig = require("./maps.json");
+const config = require("../config.json");
+const utils = require("../libs/utils.js");
 
 module.exports = {
-	name: 'server',
-    aliases: ['server', 'servers', 'boot', 'bootn', 'booten'],
-    description: 'Information about the server provided.',
-    args: true,
-    arguments: [1,2,3],
-    usage: '<1/2/3>',
+	name: "server",
+	aliases: ["server", "servers", "boot", "bootn", "booten"],
+	description: "Information about the server provided.",
+	args: true,
+	arguments: [1, 2, 3],
+	usage: "<1/2/3>",
 	execute(message, args) {
+		if (!args[0] in mapsconfig) return;
 
-		if (args[0] in mapsconfig) {
+		let host = steam_servers_config[args[0]]["ip"];
+		let port = steam_servers_config[args[0]]["port"];
 
-            console.log(`args: ${args}`);
-
-            let server_state = "";
-            console.log(steam_servers_config);
-            console.log(steam_servers_config[args[0]]);
-            console.log(steam_servers_config[args[0]]["ip"]);
-            console.log(steam_servers_config[args[0]]["port"]);
-
-            let host = steam_servers_config[args[0]]["ip"];
-            let port = steam_servers_config[args[0]]["port"]
-
-            console.log(host);
-            console.log(port);
-
-            Gamedig.query({
-                type: 'csgo',
-                host: host,
-                port: port,
-                debug: true
-            }).then((state) => {
-
-                console.log('JA GAMEDIG FUNKER');
-
-                server_state = state;
-                console.log('state:');
-                console.log(state);
-
-                const embed = new Discord.MessageEmbed()
-                    .setColor(config.colors.gp_orange)
-                    .setTitle(state["name"])
-                    // .setThumbnail('https://raw.githubusercontent.com/vgalisson/csgo-map-icons/master/80x80/collection_icon_de_dust2.png')
-                    .addField('Map', state["map"], true)
-                    .addField('Players', `${state["players"].length} / ${state["maxplayers"]}`, true)
-                    .addField('Connect', `steam://connect/${state["connect"]}`)
-                    .setTimestamp()
-
-                console.log(embed);
-                
-                console.log(`server state map: ${server_state['map']}`);
-                for (const mapconfig of mapsconfig) {
-                    console.log(`mapconfig map: ${mapconfig['name']}`);
-                    if (mapconfig['name'] == state["map"]){
-                        console.log(mapconfig);
-                        embed.setImage(mapconfig['img']);
-                        embed.setThumbnail(mapconfig['icon']);
-                        break;
-                    }
-                }
-                
-                return message.channel.send({ embed: embed });
-            }).catch((error) => {
-
-                console.log('GAMEDIG FEILER');
-                // console.log(message);
-                console.log(error);
-                return message.channel.send(`${message}\n${error}`);
-            })
+		async function gamedig(host, port) {
+			console.log(`start gamedig with ${host}:${port}`);
+			server = await Gamedig.query({
+				type: "csgo",
+				host: host,
+				port: port,
+				debug: config["env"] == "dev" ? true : false,
+			});
+			console.log(`end gamedig with ${host}:${port}`);
+			return server;
+			// .then((server) => {
+			// 	return server;
+			// })
+			// .catch((error) => {
+			// 	console.error(error);
+			// });
 		}
+
+		function makeServerEmbed(server) {
+			console.log("makeServerEmbed");
+			console.log("Server:", server);
+
+			if (new Date().getDay() == 5) {
+				title = ":beers: FREDAGSBOOTEN :beers:";
+			} else {
+				title = server["name"];
+			}
+
+			const embed = new Discord.MessageEmbed()
+				.setColor(config.colors.gp_orange)
+				.setTitle(title)
+				.addField("Map", server["map"], true)
+				.addField(
+					"Players",
+					`${server["players"].length} / ${server["maxplayers"]}`,
+					true
+				)
+				.addField("Connect", `steam://connect/${server["connect"]}`)
+				.setFooter("Last update")
+				.setTimestamp();
+
+			console.log("Embed:", embed);
+
+			// Set image and thumbnail/icon
+			mapconfig = mapsconfig.find((mapconfig) => mapconfig.name == server.map);
+			embed.setThumbnail(mapconfig.icon);
+			embed.setImage(mapconfig.img);
+			return embed;
+		}
+
+		async function serverStatus() {
+			console.log("serverstatus");
+			let server = await gamedig(host, port);
+			console.log(`server ${server.name}`);
+			let embed = makeServerEmbed(server);
+			let msg = await message.channel.send({ embed: embed });
+			const waitTime = 5 * 60 * 1000;
+			let updatesLeft = 12;
+
+			if (new Date().getDay() == 5) {
+				msg.react(":beer:");
+				msg.react(":wine:");
+				msg.react(":whisky:");
+				msg.react(":beverage_box:");
+				msg.react(":cup_with_straw:");
+			}
+
+			async function updateServerStatus(message) {
+				let server = await gamedig(host, port);
+				let embed = makeServerEmbed(server);
+				await message.edit({ embed: embed });
+				updatesLeft -= 1;
+				if (updatesLeft < 1) stopInterval();
+			}
+
+			let interval = setInterval(() => {
+				updateServerStatus(msg);
+			}, waitTime);
+
+			function stopInterval() {
+				clearInterval(interval);
+			}
+
+			// setTimeout(() => {
+			// 	console.log("first timeout");
+			// 	while (updatesLeft > 0) {
+			// 		console.log("inside while");
+			// 		setTimeout(() => {
+			// 			console.log(`${updatesLeft} updates left`);
+			// 			console.log(`waiting ${waitTime}`);
+			// 			let server = gamedig(host, port)
+			// 				.then(() => {
+			// 					let embed = makeServerEmbed(server);
+			// 					msg.edit({ embed: embed });
+			// 				})
+			// 				.catch(console.log)
+			// 				.then((updatesLeft -= 1));
+			// 		}, waitTime);
+			// 	}
+			// }, waitTime);
+		}
+		console.log("starting with serverStatus");
+		serverStatus();
 	},
 };

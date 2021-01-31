@@ -1,69 +1,77 @@
+// Library Imports
+const fs = require("fs");
+const Discord = require("discord.js");
 
-const fs = require('fs');
+// My Imports
+const config = require("./config.json");
+const secrets = require("./secrets.json");
+const { prefix } = require("./config.json");
+const utils = require("./libs/utils");
 
-const Discord = require('discord.js');
+// Setup
 const client = new Discord.Client();
-
 client.commands = new Discord.Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs
+	.readdirSync("./commands")
+	.filter((file) => file.endsWith(".js"));
 
 for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-    client.commands.set(command.name, command);
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
 }
 
-const config = require('./config.json');
-const secrets = require('./secrets.json');
-const { prefix } = require('./config.json');
-
-// const dev = new Discord.User(client, {
-//     id:"152026317016137728",
-//     username: "Gabbeh",
-//     discriminator: "0547",
-// });
-
-client.once('ready', () => {
-    console.log(`\n\n\nLogged in as ${client.user.tag}!\n\n\n`);
+// Bot
+client.once("ready", () => {
+	console.log(`\n\n\nLogged in as ${client.user.tag}!\n\n\n`);
 });
 
-// message command handler
-client.on('message', message => {
+// Message command handler
+client.on("message", (message) => {
+	// Commands must start with prefix, and not be sent by bot.
+	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-    if ( config.env == 'dev' ) return message.reply('Jeg blir oppdatert. Snart tilbake.');
+	// get commmandName and args from message
+	// TODO: Dont split args like -> "this has double quotes around it"
+	const args = message.content.slice(prefix.length).trim().split(/ +/);
+	const commandName = args.shift().toLowerCase();
 
-    // Commands must start with prefix, and not be sent by bot.
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
+	// Find command
+	const command =
+		client.commands.get(commandName) ||
+		client.commands.find(
+			(cmd) => cmd.aliases && cmd.aliases.includes(commandName)
+		);
 
-    // get commmandName and args from message
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
-    const commandName = args.shift().toLowerCase();
+	if (!command)
+		return message.reply("That doesn't look like one of my commands.");
 
-    // find command
-    const command = client.commands.get(commandName)
-        || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	if (command.args && !args.length) {
+		let reply = `This command requires arguments. See \`${prefix}help ${commandName}\` for more info.`;
+		return message.reply(reply);
+	}
 
-    if (!command) return;
-
-    if (command.args && !args.length) {
-        let reply = `You didn't provide any arguments, ${message.author}!`;
-
-        if (command.arguments.length) {
-            reply += `\nArguments: ${command.arguments}`;
-        }
-        if (command.usage) {
-            reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
-        }
-
-        return message.channel.send(reply);
-    }
-
-    try {
-        command.execute(message, args);
-    } catch (error) {
-        console.error(error);
-        message.reply(`${gabbeh} Error: ${error}`);
-    }
+	try {
+		command.execute(message, args);
+	} catch (error) {
+		console.error(error);
+		utils.sendErrorToDev(message, error, client);
+		// console.error(error);
+		// error_msg = [];
+		// error_msg.push(`This bot has trouble: ${client.user.username} (${client.user.id})`);
+		// if (message.guild) error_msg.push(`Guild: ${message.guild.name}`);
+		// error_msg.push(`User: ${message.author.username}`);
+		// error_msg.push(`Channel: ${message.channel}`);
+		// error_msg.push(`Message: ${message}`);
+		// error_msg.push(`Error: ${error}`);
+		// console.debug(error_msg);
+		// utils.getDeveloper(client).send(error_msg);
+	}
 });
 
-
-client.login(secrets.token);
+if (process.argv.length > 2) {
+	if (process.argv[2].toLowerCase() == "dev") {
+		client.login(secrets.token_dev);
+	}
+} else {
+	client.login(secrets.token);
+}

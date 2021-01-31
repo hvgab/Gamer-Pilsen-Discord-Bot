@@ -9,14 +9,16 @@ For [GamerPilsen](https://gamerpilsen.no) by [Gabbeh](https://gabbeh.no)
 
 ## How it looks
 
-![v.1.0.0-example.png](v.1.0.0-example.png)
+![v.1.0.0-example.png](resources/screenshots/v.1.0.0-example.png)
 
 ## Run
+
 Start in developer mode: `node --inspect ./index.js`
 
 You can use nodeman with watcher for instant reload `nodemon --inspect --watch`
 
 ## Made with
+
 - [Discord.js](https://discord.js.org) bot framework
 - https://github.com/vgalisson/csgo-map-icons - CS:GO Map Icons
 - https://github.com/akisman/js-ascii-table - JS Ascii Table

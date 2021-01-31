@@ -1,6 +1,6 @@
 {
   "name": "gamerpilsen-discord-bot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Custom Discord Bot for Gamer-Pilsen",
   "main": "index.js",
   "dependencies": {
@@ -11,17 +11,22 @@
     "gamedig": "^2.0.24",
     "nodemon": "^2.0.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jest": "^26.6.3"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --config jestconfig.json"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hvgab/Gamer-Pilsen-Discord-Bot.git"
   },
   "keywords": [
+    "gamerpilsen",
     "gamer-pilsen",
     "discord",
+    "telialigaen",
+    "csgo",
     "bot"
   ],
   "author": "Gabbeh",
