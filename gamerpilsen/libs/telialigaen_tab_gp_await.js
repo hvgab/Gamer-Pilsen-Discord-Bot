@@ -1,7 +1,5 @@
 // Imports
 const axios = require("axios");
-const JSAsciiTable = require("./js-ascii-table.js");
-const telialigaenApi = require("./telialigaenApi");
 const { getSeasons, getTables } = require("./telialigaenApi");
 const { makeTable } = require("./utils.js");
 

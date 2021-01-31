@@ -85,7 +85,14 @@ module.exports = {
 			console.log(members);
 			members
 				.filter((user) => !user.user.bot)
-				.each((user) => console.log(user.user.username));
+				.each((user) => {
+					console.log(user.user.username);
+					console.log(user.user.id);
+					console.log(user.user.tag);
+					console.log(user.user.locale);
+					console.log(user.user.prexence);
+					console.log(user.user.toString());
+				});
 
 			// memberManager
 			// 	.fetch()
