@@ -1,5 +1,8 @@
+node_modules/*
 gamerpilsen/secret.json
 gamerpilsen/secrets.json
-node_modules/*
-gamerpilsen/node_modules/
+gamerpilsen/node_modules/*
 gamerpilsen/achievements/
+resources/achievements/
+resources/icons/
+gamerpilsen/coverage

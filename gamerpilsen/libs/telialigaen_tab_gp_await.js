@@ -1,6 +1,9 @@
 // Imports
 const axios = require("axios");
 const JSAsciiTable = require("./js-ascii-table.js");
+const telialigaenApi = require("./telialigaenApi");
+const { getSeasons, getTables } = require("./telialigaenApi");
+const { makeTable } = require("./utils.js");
 
 // Constants
 const SEASONS_URL = "https://www.telialigaen.no/api/seasons";
@@ -19,20 +22,6 @@ const headers = [
 	"Bonus",
 	"Poeng",
 ];
-
-async function getSeasons() {
-	const seasons = await axios.get(SEASONS_URL);
-	console.log(`Got seasons (${seasons.data.length})`);
-	return seasons.data;
-}
-
-async function getTables(divisionId, seasonId) {
-	const tables = await axios.get(TABLES_URL, {
-		params: { division: divisionId, season: seasonId },
-	});
-	console.log(`Got tables (${tables.data.length})`);
-	return tables.data;
-}
 
 async function getTabellerGP() {
 	const tableData = [];
@@ -81,24 +70,6 @@ async function getTabellerGP() {
 	tableData.unshift(headers);
 
 	return tableData;
-}
-
-function makeTable(tableData) {
-	console.log("Make table");
-	// console.log(`tableData: \n ${tableData}`);
-	var tableOptions = {
-		title: "Telialigaen",
-		spreadsheet: false,
-		header: true,
-		align: true,
-		padding: 1,
-		theme: JSAsciiTable.JSAsciiTable.getThemes()[1].value,
-		// theme: AsciiTable.getThemes()[0].value // // 0='MySQL' / 1='Unicode' / 2='Oracle'
-	};
-	var table = new JSAsciiTable.JSAsciiTable(tableData, tableOptions);
-	var ascii = table.render();
-	console.log("Table made");
-	return ascii;
 }
 
 async function main() {

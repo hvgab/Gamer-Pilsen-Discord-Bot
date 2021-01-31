@@ -68,8 +68,10 @@ client.on("message", (message) => {
 	}
 });
 
-if (config.env == "dev") {
-	client.login(secrets.token_dev);
+if (process.argv.length > 2) {
+	if (process.argv[2].toLowerCase() == "dev") {
+		client.login(secrets.token_dev);
+	}
 } else {
 	client.login(secrets.token);
 }

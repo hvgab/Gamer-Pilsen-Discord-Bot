@@ -7,9 +7,9 @@ module.exports = {
 	usage: "<kommando>",
 	cooldown: 5,
 	execute(message, args) {
-		console.log("help");
-		console.log(message.content);
-		console.log(args);
+		console.log("help command");
+		console.log("message.content", message.content);
+		console.log("args", args);
 
 		const data = [];
 		const { commands } = message.client;
@@ -41,14 +41,6 @@ module.exports = {
 			);
 
 			return message.reply(data, { split: true });
-			// .then(() => {
-			//     if (message.channel.type === 'dm') return;
-			//     message.reply('I\'ve sent you a DM with all my commands!');
-			// })
-			// .catch(error => {
-			//     console.error(`Could not send help DM to ${message.author.tag}.\n`, error);
-			//     message.reply('It seems like I can\'t DM you! Do you have DMs disabled?');
-			// });
 		}
 
 		const name = args[0].toLowerCase();
