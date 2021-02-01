@@ -66,7 +66,17 @@ module.exports = {
 
 		async function serverStatus() {
 			console.log("serverstatus");
-			let server = await gamedig(host, port);
+			let server;
+			try {
+				server = await gamedig(host, port);
+			} catch (error) {
+				console.log("errorname", error.name);
+				console.log("errormessage", error.message);
+				console.error(error);
+				return message.reply(
+					"Kan ikke sjekke server status for øyeblikket, Serveren kan være offline, eller det kan være en brannmur mellom meg og serveren."
+				);
+			}
 			console.log(`server ${server.name}`);
 			let embed = makeServerEmbed(server);
 			let msg = await message.channel.send({ embed: embed });
