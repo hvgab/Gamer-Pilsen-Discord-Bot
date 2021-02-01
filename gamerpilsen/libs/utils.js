@@ -2,7 +2,6 @@
 const Discord = require("discord.js");
 const JSAsciiTable = require("./js-ascii-table.js");
 
-// Constant utils
 function getDeveloper(client) {
 	const developer = new Discord.User(client, {
 		id: "152026317016137728",
