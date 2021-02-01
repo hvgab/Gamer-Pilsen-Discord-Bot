@@ -28,12 +28,6 @@ module.exports = {
 			});
 			console.log(`end gamedig with ${host}:${port}`);
 			return server;
-			// .then((server) => {
-			// 	return server;
-			// })
-			// .catch((error) => {
-			// 	console.error(error);
-			// });
 		}
 
 		function makeServerEmbed(server) {
@@ -63,8 +57,10 @@ module.exports = {
 
 			// Set image and thumbnail/icon
 			mapconfig = mapsconfig.find((mapconfig) => mapconfig.name == server.map);
-			embed.setThumbnail(mapconfig.icon);
-			embed.setImage(mapconfig.img);
+			if (mapconfig) {
+				embed.setThumbnail(mapconfig.icon);
+				embed.setImage(mapconfig.img);
+			}
 			return embed;
 		}
 
@@ -78,11 +74,14 @@ module.exports = {
 			let updatesLeft = 12;
 
 			if (new Date().getDay() == 5) {
-				msg.react(":beer:");
-				msg.react(":wine:");
-				msg.react(":whisky:");
-				msg.react(":beverage_box:");
-				msg.react(":cup_with_straw:");
+				Promise.all([
+					msg.react("🍺"),
+					msg.react("🍷"),
+					msg.react("🍾"),
+					msg.react("🥃"),
+					msg.react("☕"),
+					msg.react("🧃"),
+				]).catch(() => console.error("One Of The Emojis failed to react"));
 			}
 
 			async function updateServerStatus(message) {
@@ -100,24 +99,6 @@ module.exports = {
 			function stopInterval() {
 				clearInterval(interval);
 			}
-
-			// setTimeout(() => {
-			// 	console.log("first timeout");
-			// 	while (updatesLeft > 0) {
-			// 		console.log("inside while");
-			// 		setTimeout(() => {
-			// 			console.log(`${updatesLeft} updates left`);
-			// 			console.log(`waiting ${waitTime}`);
-			// 			let server = gamedig(host, port)
-			// 				.then(() => {
-			// 					let embed = makeServerEmbed(server);
-			// 					msg.edit({ embed: embed });
-			// 				})
-			// 				.catch(console.log)
-			// 				.then((updatesLeft -= 1));
-			// 		}, waitTime);
-			// 	}
-			// }, waitTime);
 		}
 		console.log("starting with serverStatus");
 		serverStatus();

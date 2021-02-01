@@ -11,6 +11,7 @@ module.exports = {
 	args: true,
 	aliases: ["trigger"],
 	usage: "<@user>",
+	hidden: true,
 	async execute(message, args) {
 		async function downloadImage(url, filename) {
 			const path = Path.resolve("..", "resources", "images", filename);
@@ -35,38 +36,32 @@ module.exports = {
 		if (!args.length) {
 			return message.reply("You need to tag a user!");
 		} else {
-			console.log("mentions", message.mentions.users);
-			console.log("mentions", message.mentions.users.first());
-			console.log("mentions", message.mentions.users.first().defaultAvatarURL);
-
 			const user = message.mentions.users.first();
-			const displayAvatarURL = message.mentions.users
-				.first()
-				.displayAvatarURL({ format: "png", size: 128 });
+			const displayAvatarURL = user.displayAvatarURL({
+				format: "png",
+				size: 128,
+			});
 			console.log("displayAvatarURL", displayAvatarURL);
 
 			const triggerImageUrl = `https://some-random-api.ml/canvas/triggered?avatar=${displayAvatarURL}`;
+			const triggerImageFilename = `${user.username}-${user.discriminator}-Triggered.gif`;
 			const triggerImage = await downloadImage(
 				triggerImageUrl,
-				`${user.username}-${user.discriminator}-Triggered.gif`
+				triggerImageFilename
 			);
 			console.log(triggerImage);
 
-			// upload to imgbb
-			console.log("upload to imgbb");
-			const imgbbResponse = Imgbb.upload();
-			console.log("uploaded to imgbb");
-			console.log(imgbbResponse);
+			// upload to imgbb?
 
-			embed = new Discord.MessageEmbed()
-				.attachFiles([triggerImage.path])
-				.setTitle("**TRIGGERED**")
-				.setThumbnail(displayAvatarURL)
-				.setImage(`attachment://${triggerImage.filename}`);
-			console.log("embed", embed);
-			message.reply({ embed });
+			// Attach gif directly
+			console.log("attaching gif directly");
+			attachment = new Discord.MessageAttachment(
+				triggerImage.path,
+				triggerImage.filename
+			);
+			const sentMessage = await message.reply(attachment);
 
-			// return message.client.commands.get("help").execute(message, [this.name]);
+			console.log("sentMessage", sentMessage);
 		}
 	},
 };

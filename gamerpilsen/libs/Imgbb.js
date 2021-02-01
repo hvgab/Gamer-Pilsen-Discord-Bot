@@ -2,67 +2,76 @@ const Axios = require("axios");
 const { EROFS } = require("constants");
 const FormData = require("form-data");
 const fs = require("fs");
+const fsp = require("fs").promises;
 const Path = require("path");
 const secrets = require("../secrets.json");
 
-class ImgBB {
-	uploadsFilePath = "./imgbb-uploads.json";
+/* Upload images to imgbb, discord prefers not to get attachments. */
 
-	static async upload(image, name) {
-		// image{filename, path}
+uploadsFilePath = "./imgbb-uploads.json";
 
-		const url = "https://api.imgbb.com/1/upload";
+async function upload(imagePath, imageFilename, name = null) {
+	const url = "https://api.imgbb.com/1/upload";
 
-		console.log("upload img", image);
-		console.log("upload name", name);
-		console.log("upload key", secrets.imgbbKey);
+	console.log("upload imagePath", imagePath);
+	console.log("upload imageFilename", imageFilename);
+	console.log("upload name", name);
+	console.log("upload key", secrets.imgbbKey);
 
-		console.debug("making form");
-		const form = await new FormData();
-		form.append("key", secrets.imgbbKey);
-		form.append("image", fs.createReadStream(image.path));
+	console.debug("making form");
+	const form = new FormData();
+	form.append("key", secrets.imgbbKey);
+	form.append("image", fs.createReadStream(imagePath), {
+		filename: imageFilename,
+		contentType: "image/gif",
+	});
+	if (name != null) {
+		console.log(`sending with name ${name}`);
 		form.append("name", `${name}`);
-		console.debug("made form");
-
-		console.debug("Posting to ImgBB");
-		const response = await Axios.post(url, form, {
-			headers: form.getHeaders(),
-		});
-		console.debug("Posted to ImgBB");
-		// Axios.post(url, form, { headers: form.getHeaders() })
-		// 	.then((response) => {
-		// 		console.log(response.data);
-		// 	})
-		// 	.catch((error) => {
-		// 		console.log(error);
-		// 	});
-
-		console.log(`${response.status} ${response.statusText}`);
-		console.log(response.data);
-
-		console.log("cache response");
-
-		this.saveToUploads(response.data);
-
-		return response.data;
-		// open json file, append, save
 	}
+	console.debug("made form");
 
-	static saveToUploads(imgbbResponse) {
-		console.log("read uploads file");
-		const uploads = fs.readFileSync(this.uploadsFilePath);
-		console.log(uploads);
-		console.log(typeof uploads);
+	console.debug("Posting to ImgBB");
+	const response = await Axios.post(url, form, {
+		headers: form.getHeaders(),
+	});
+	console.debug("Posted to ImgBB");
 
-		uploads.push(imgbbResponse);
-		console.log("pushed new response");
-		fs.writeFileSync(this.uploadsFilePath, uploads);
-		console.log("wrote to file");
+	console.log(`${response.status} ${response.statusText}`);
+	return response.data;
+}
+
+async function saveToUploads(imgbbResponse) {
+	// Cache the upload to json, get same url next time.
+	let imgbbUploads;
+	// open file
+	try {
+		imgbbUploadsFile = await fsp.readFile("./libs/imgbb-uploads.json", "utf8");
+		imgbbUploads = JSON.parse(imgbbUploadsFile);
+		console.log(imgbbUploads);
+	} catch (error) {
+		console.error("Could not open file", error);
+		return;
+	}
+	console.log("typeof imgbbUploads: ", typeof imgbbUploads);
+	console.log("imgbbUploads: ", imgbbUploads);
+
+	// add img to list
+	imgbbUploads.push(digte);
+	console.log("pushed data to imgbbUploads");
+	console.log("imgbbUploads: ", imgbbUploads);
+
+	// save file
+	const saveData = JSON.stringify(imgbbUploads, null, 2);
+	try {
+		await fsp.writeFile("./libs/imgbb-uploads.json", saveData, "utf8");
+	} catch (error) {
+		console.error("Could not save data to file error", error);
 	}
 }
 
-function saveTest(){
-  const digte = {
+async function saveTest() {
+	const digte = {
 		data: {
 			id: "R94qvM8",
 			title: "Gabbeh-Triggered",
@@ -90,21 +99,9 @@ function saveTest(){
 		},
 		success: true,
 		status: 200,
-  };
-  
-}
-
-function ftest() {
-	const img = {
-		filename: "Gabbeh_0547_trigger.gif",
-		path:
-			"F:\\DEV\\gamerpilsen-discord-bot\\resources\\images\\Gabbeh_0547_trigger.gif",
 	};
-
-	const response = ImgBB.upload(img, "GabbehTriggered");
-	console.log(response);
-	return response;
 }
-ftest();
 
-exports.ImgBB = ImgBB;
+// saveTest();
+
+exports.upload = upload;

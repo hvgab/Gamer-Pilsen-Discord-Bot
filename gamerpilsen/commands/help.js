@@ -5,7 +5,6 @@ module.exports = {
 	description: "Oversikt over alle kommandoer",
 	aliases: ["hjelp"],
 	usage: "<kommando>",
-	cooldown: 5,
 	execute(message, args) {
 		console.log("help command");
 		console.log("message.content", message.content);
@@ -59,10 +58,11 @@ module.exports = {
 		if (command.description)
 			data.push(`**Description:** ${command.description}`);
 		if (command.arguments) data.push(`**Arguments:** ${command.arguments}`);
+
 		if (command.usage)
 			data.push(`**Usage:** ${prefix}${command.name} ${command.usage}`);
 
-		data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);
+		// data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);
 
 		message.channel.send(data, { split: true });
 	},

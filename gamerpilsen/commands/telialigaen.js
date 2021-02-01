@@ -1,7 +1,6 @@
 const axios = require("axios");
 const { stripIndent } = require("common-tags");
 const JSAsciiTable = require("../libs/js-ascii-table.js");
-const telialigaenconfig = require("./telialigaen.json");
 const { prefix } = require("../config.json");
 const telialigaenTabellerGP = require("../libs/telialigaen_tab_gp_await.js");
 const { sendErrorToDev } = require("../libs/utils.js");
@@ -268,64 +267,5 @@ module.exports = {
 		} else {
 			return message.client.commands.get("help").execute(message, [this.name]);
 		}
-
-		// !TELIALIGAEN KAMPER
-
-		// if (
-		//     args.length == 2
-		//     && args[0].toUpperCase() == 'KAMPER'
-		//     && args[1].toUpperCase() == 'TEAM'
-		//     ) {
-
-		//     const msg = [];
-		//     const tables = [];
-		//     const table_data = [
-		//         [
-		//             // 'Divisjon',
-		//             '#',
-		//             'Lag',
-		//             'Spilt',
-		//             'Vunnet',
-		//             'Uavgjort',
-		//             'Tapt',
-		//             '+/-',
-		//             'Straff',
-		//             'Bonus',
-		//             'Poeng',
-		//         ],
-		//     ];
-		//     let division_name = "";
-		//     let gp_name = "";
-
-		//     const matches = [];
-
-		//     for (const division of telialigaenconfig.divisions) {
-		//         axios.get(`https://www.telialigaen.no/api/matches?division=${division['id']}&game=csgo&limit=100&offset=0&order=roundNumber&season=${telialigaenconfig.season}&status=unfinished`)
-		//         .then( function(response) {
-		//             for (const match of response.data) {
-		//                 if (
-		//                     match['homeTeam']['commonName'] == 'Gamer-Pilsen'
-		//                     ||match['awayTeam']['commonName'] == 'Gamer-Pilsen'
-		//                 ) {
-		//                     matches.push([
-		//                         match['tournament']['name'],
-		//                         match['roundIdentifierText'],
-		//                         match['startTime'],
-		//                         match['postponed'],
-		//                         match['cancelled'],
-		//                         `${match['homeTeam']['name']}`,
-		//                         match[''],
-		//                         match[''],
-		//                         match[''],
-		//                         match[''],
-		//                         match[''],
-		//                     ]);
-		//                 }
-		//             }
-		//         })
-		//         .catch( function(error) {
-		//             console.log(error);
-		//         });
-		//     }
-	}, // execute
+	},
 };

@@ -3,6 +3,12 @@ const axios = require("axios");
 const { getSeasons, getTables } = require("./telialigaenApi");
 const { makeTable } = require("./utils.js");
 
+/* 
+ !telialigaen tabeller gp
+ async/await versjonen av tl tab gp.
+ trenger ikke å få sin egen fil, men gjorde det enklere å teste.
+ */
+
 // Constants
 const SEASONS_URL = "https://www.telialigaen.no/api/seasons";
 const TABLES_URL = "https://www.telialigaen.no/api/tables"; //params: division=x&season=8595
