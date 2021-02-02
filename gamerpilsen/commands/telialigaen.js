@@ -10,7 +10,7 @@ const telialigaenTabellerGP = require("../libs/telialigaen_tab_gp_await.js");
 const tlKamper = require("../libs/telialigaen_tab_team_next_match");
 
 module.exports = {
-	name: "Telialigaen",
+	name: "telialigaen",
 	description: stripIndent`
     Telialigen info.
     \`${prefix}telialigaen tabeller\` - alle tabeller hvor GP er med kommer på dm.

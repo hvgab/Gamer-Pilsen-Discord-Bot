@@ -27,19 +27,24 @@ async function getMatchesFor(team, firstMatchOnly = false) {
 
 		await Promise.all(
 			season.divisions.map(async (division) => {
-				const matches = await getMatches(division.id, season.id);
-				for (const match of matches) {
-					if (
-						match.homeTeam.name.toLowerCase().includes(team.toLowerCase()) ||
-						match.awayTeam.name.toLowerCase().includes(team.toLowerCase())
-					) {
-						console.log(
-							`Legger til kamp i lista. (${match.homeTeam.name} vs ${match.awayTeam.name})`
-						);
-						match.season = season;
-						resultMatches.push(match);
-						if (firstMatchOnly) break;
+				let matches;
+				try {
+					matches = await getMatches(division.id, season.id);
+					for (const match of matches) {
+						if (
+							match.homeTeam.name.toLowerCase().includes(team.toLowerCase()) ||
+							match.awayTeam.name.toLowerCase().includes(team.toLowerCase())
+						) {
+							console.log(
+								`Legger til kamp i lista. (${match.homeTeam.name} vs ${match.awayTeam.name})`
+							);
+							match.season = season;
+							resultMatches.push(match);
+							if (firstMatchOnly) break;
+						}
 					}
+				} catch (error) {
+					console.log(error);
 				}
 			})
 		);
