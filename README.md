@@ -17,6 +17,13 @@ Start in developer mode: `node --inspect ./index.js`
 
 You can use nodeman with watcher for instant reload `nodemon --inspect --watch`
 
+## Todo:
+
+guild admin commands for telialigaen api.
+set which seasons we are interested in.
+maybe search for all seasons and not just active.
+maybe several games.
+
 ## Made with
 
 - [Discord.js](https://discord.js.org) bot framework
