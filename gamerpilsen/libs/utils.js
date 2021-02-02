@@ -29,11 +29,11 @@ function sendErrorToDev(message, error, client) {
 	developer.send(error_msg);
 }
 
-function makeTable(tableData) {
+function makeTable(tableData, title = "Telialigaen") {
 	console.log("Make table");
 	// console.log(`tableData: \n ${tableData}`);
 	var tableOptions = {
-		title: "Telialigaen",
+		title: title,
 		spreadsheet: false,
 		header: true,
 		align: true,

@@ -1,22 +1,26 @@
+// Third party imports
 const axios = require("axios");
 const { stripIndent } = require("common-tags");
 const JSAsciiTable = require("../libs/js-ascii-table.js");
+// Local imports Utils
 const { prefix } = require("../config.json");
-const telialigaenTabellerGP = require("../libs/telialigaen_tab_gp_await.js");
 const { sendErrorToDev } = require("../libs/utils.js");
+// Local imports
+const telialigaenTabellerGP = require("../libs/telialigaen_tab_gp_await.js");
+const tlKamper = require("../libs/telialigaen_tab_team_next_match");
 
 module.exports = {
-	name: "Telialigaen",
+	name: "telialigaen",
 	description: stripIndent`
     Telialigen info.
     \`${prefix}telialigaen tabeller\` - alle tabeller hvor GP er med kommer på dm.
     \`${prefix}telialigaen tabeller gp\` - minitabell for alle GP lagene.
     \`${prefix}telialigaen tabeller team <lagnavn>\` - divisjonstabellen til <lagnavn>
+    **NY:**\`${prefix}telialigaen kamp team <lagnavn>\` - de neste kampene for laget
     `,
 	aliases: ["telia", "ligaen", "tl"],
 	args: true,
-	arguments: ["tabeller"], //, 'terminliste', 'resultater', 'lagene'],
-	// usage:
+	arguments: ["tabeller", "kamper"], //, 'terminliste', 'resultater', 'lagene'],
 
 	execute(message, args) {
 		// !TELIALIGAEN TABELLER
@@ -264,7 +268,34 @@ module.exports = {
 					.get("help")
 					.execute(message, [this.name]);
 			}
-		} else {
+		}
+		// !TELIALIGAEN KAMPER TEAM <TEAM>
+		else if (
+			args.length >= 1 &&
+			["KAMPER", "KAMP", "K"].includes(args[0].toUpperCase())
+		) {
+			if (args.length >= 3 && args[1].toUpperCase() == "TEAM") {
+				const TEAM_NAME = args[2];
+				tlKamper
+					.main(TEAM_NAME)
+					.then(function (asciiTable) {
+						return message.channel.send(`\`\`\`${asciiTable}\`\`\``, {
+							split: false,
+						});
+					})
+					.catch(function (error) {
+						console.error(error);
+						sendErrorToDev(message, error, message.client);
+						message.reply("I made a boo-boo");
+					});
+			} else {
+				return message.reply(
+					"Du kan kun søke etter kamper på lag-navn. `!telialigaen kamper team gamer-pilsen`"
+				);
+			}
+		}
+		// MISSING GROUP COMMAND
+		else {
 			return message.client.commands.get("help").execute(message, [this.name]);
 		}
 	},
