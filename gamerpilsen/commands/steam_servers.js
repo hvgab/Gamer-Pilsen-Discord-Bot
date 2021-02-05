@@ -34,7 +34,7 @@ module.exports = {
 			console.log("makeServerEmbed");
 			console.log("Server:", server);
 
-			if (new Date().getDay() == 5) {
+			if (new Date().getDay() == 5 && args[0] == 2) {
 				title = ":beers: FREDAGSBOOTEN :beers:";
 			} else {
 				title = server["name"];
@@ -86,9 +86,10 @@ module.exports = {
 			if (new Date().getDay() == 5) {
 				Promise.all([
 					msg.react("🍺"),
-					msg.react("🍷"),
-					msg.react("🍾"),
+					msg.react("🍹"),
 					msg.react("🥃"),
+					msg.react("🍾"),
+					msg.react("🍷"),
 					msg.react("☕"),
 					msg.react("🧃"),
 				]).catch(() => console.error("One Of The Emojis failed to react"));
