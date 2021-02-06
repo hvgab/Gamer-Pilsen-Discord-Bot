@@ -46,7 +46,7 @@ async function getTabellerGP() {
 				for (const table of tables) {
 					for (const signup of table["signups"]) {
 						if (signup["participant"]["shortname"] == "❡p") {
-							signupData = [
+							let signupData = [
 								division["name"],
 								signup["placement"].toString(),
 								signup["participant"]["name"],

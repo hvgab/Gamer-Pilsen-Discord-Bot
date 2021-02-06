@@ -48,8 +48,6 @@ module.exports = {
 			else if (args.length >= 3 && args[1].toUpperCase() == "TEAM") {
 				const tables_url =
 					"https://www.telialigaen.no/api/tables?division&season=8595";
-				const msg = [];
-				const tables = [];
 
 				const TEAM_NAME = args[2];
 
@@ -75,10 +73,9 @@ module.exports = {
 						];
 						let division_name = "";
 						let gp_name = "";
-						let found_team = false;
 
 						// console.log(divisions);
-						divisions = response.data;
+						let divisions = response.data;
 						for (const division of divisions) {
 							console.log(`Looping division: ${division["name"]}`);
 							for (const signup of division["signups"]) {
@@ -93,8 +90,6 @@ module.exports = {
 										signup["participant"]["name"].toUpperCase() ==
 											"Gamer-Pilsen".toUpperCase())
 								) {
-									found_team = true;
-
 									console.debug(
 										`Found ${signup["participant"]["name"]} in ${division["name"]}`
 									);
@@ -103,7 +98,7 @@ module.exports = {
 
 									// do for loop again?
 									for (const signup of division["signups"]) {
-										signupData = [
+										let signupData = [
 											// division['name'],
 											signup["placement"].toString(),
 											signup["participant"]["name"],
@@ -210,7 +205,7 @@ module.exports = {
 
 									// GP is in division, make table.
 									for (const signup of division["signups"]) {
-										signupData = [
+										let signupData = [
 											// division['name'],
 											signup["placement"].toString(),
 											signup["participant"]["name"],

@@ -64,13 +64,17 @@ async function getMatchesFor(team, firstMatchOnly = false) {
 	const tableData = [];
 	for (const match of resultMatches) {
 		// Do datetime stuff
-		datetimeStartTime = DateTime.fromFormat(match.startTime, "yyyy-MM-dd TT", {
-			locale: "no",
-		});
-		relativeStartTime = datetimeStartTime.toRelative();
+		let datetimeStartTime = DateTime.fromFormat(
+			match.startTime,
+			"yyyy-MM-dd TT",
+			{
+				locale: "no",
+			}
+		);
+		let relativeStartTime = datetimeStartTime.toRelative();
 
 		// Add to match data
-		matchData = [
+		let matchData = [
 			match.id.toString(),
 			match.tournament.name,
 			match.roundNumber.toString(),

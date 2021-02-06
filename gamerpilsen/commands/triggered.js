@@ -25,7 +25,7 @@ module.exports = {
 
 			response.data.pipe(writer);
 
-			imageResponse = {
+			let imageResponse = {
 				filename: filename,
 				path: path,
 			};
@@ -55,7 +55,7 @@ module.exports = {
 
 			// Attach gif directly
 			console.log("attaching gif directly");
-			attachment = new Discord.MessageAttachment(
+			let attachment = new Discord.MessageAttachment(
 				triggerImage.path,
 				triggerImage.filename
 			);

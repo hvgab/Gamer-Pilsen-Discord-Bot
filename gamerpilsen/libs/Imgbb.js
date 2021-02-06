@@ -1,14 +1,12 @@
 const Axios = require("axios");
-const { EROFS } = require("constants");
 const FormData = require("form-data");
 const fs = require("fs");
 const fsp = require("fs").promises;
-const Path = require("path");
 const secrets = require("../secrets.json");
 
 /* Upload images to imgbb, discord prefers not to get attachments. */
 
-uploadsFilePath = "./imgbb-uploads.json";
+const uploadsFilePath = "./imgbb-uploads.json";
 
 async function upload(imagePath, imageFilename, name = null) {
 	const url = "https://api.imgbb.com/1/upload";
@@ -46,8 +44,11 @@ async function saveToUploads(imgbbResponse) {
 	let imgbbUploads;
 	// open file
 	try {
-		imgbbUploadsFile = await fsp.readFile("./libs/imgbb-uploads.json", "utf8");
-		imgbbUploads = JSON.parse(imgbbUploadsFile);
+		let imgbbUploadsFile = await fsp.readFile(
+			"./libs/imgbb-uploads.json",
+			"utf8"
+		);
+		let imgbbUploads = JSON.parse(imgbbUploadsFile);
 		console.log(imgbbUploads);
 	} catch (error) {
 		console.error("Could not open file", error);
