@@ -15,7 +15,7 @@ function getDeveloper(client) {
 function sendErrorToDev(message, error, client) {
 	const developer = getDeveloper(client);
 
-	error_msg = [];
+	let error_msg = [];
 	error_msg.push(`Hey ${developer}!`);
 	error_msg.push(
 		`This bot has trouble: ${client.user.username} (${client.user.id})`

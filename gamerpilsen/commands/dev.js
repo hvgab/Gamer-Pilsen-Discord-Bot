@@ -16,8 +16,8 @@ module.exports = {
 
 			const getMapImages = async () => {
 				const maps = [];
-				emptyPage = false;
-				i = 46;
+				let emptyPage = false;
+				let i = 1;
 				while (!emptyPage) {
 					console.log(`Getting page ${i}`);
 					try {

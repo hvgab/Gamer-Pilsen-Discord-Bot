@@ -7,8 +7,8 @@ module.exports = {
 	users: ["Gabbeh#0547"],
 
 	execute(message, args) {
-		guild = message.guild;
-		memberManager = guild.members;
-		members = memberManager.fetch().then(console.log()).catch(console.log);
+		let guild = message.guild;
+		let memberManager = guild.members;
+		let members = memberManager.fetch().then(console.log()).catch(console.log);
 	},
 };

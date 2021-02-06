@@ -13,14 +13,14 @@ module.exports = {
 	arguments: [1, 2, 3],
 	usage: "<1/2/3>",
 	execute(message, args) {
-		if (!args[0] in mapsconfig) return;
+		if (!(args[0] in mapsconfig)) return;
 
 		let host = steam_servers_config[args[0]]["ip"];
 		let port = steam_servers_config[args[0]]["port"];
 
 		async function gamedig(host, port) {
 			console.log(`start gamedig with ${host}:${port}`);
-			server = await Gamedig.query({
+			let server = await Gamedig.query({
 				type: "csgo",
 				host: host,
 				port: port,
@@ -33,11 +33,10 @@ module.exports = {
 		function makeServerEmbed(server) {
 			console.log("makeServerEmbed");
 			console.log("Server:", server);
+			let title = server.name;
 
 			if (new Date().getDay() == 5 && args[0] == 2) {
 				title = ":beers: FREDAGSBOOTEN :beers:";
-			} else {
-				title = server["name"];
 			}
 
 			const embed = new Discord.MessageEmbed()
@@ -56,7 +55,9 @@ module.exports = {
 			console.log("Embed:", embed);
 
 			// Set image and thumbnail/icon
-			mapconfig = mapsconfig.find((mapconfig) => mapconfig.name == server.map);
+			let mapconfig = mapsconfig.find(
+				(mapconfig) => mapconfig.name == server.map
+			);
 			if (mapconfig) {
 				embed.setThumbnail(mapconfig.icon);
 				embed.setImage(mapconfig.img);

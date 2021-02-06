@@ -4,18 +4,18 @@ let temp_args = [];
 for (const link of this_config) {
 	temp_args.push(link["title"]);
 }
-const arguments = temp_args.join(", ");
+const available_arguments = temp_args.join(", ");
 
 module.exports = {
 	name: "link",
 	description: "GP relevant links.",
-	arguments: arguments,
+	arguments: available_arguments,
 	aliases: ["links", "lenke", "lenker"],
 	usage: "[link]",
 	execute(message, args) {
 		if (!args.length) {
 			// link (all)
-			msg_response = ["GP Lenker"];
+			let msg_response = ["GP Lenker"];
 			for (const link of this_config) {
 				msg_response.push(`${link.title}\n<${link.url}>`);
 			}
