@@ -9,6 +9,7 @@
 		"discord.js": "^12.5.1",
 		"envy": "^2.0.0",
 		"gamedig": "^2.0.24",
+		"luxon": "^1.25.0",
 		"nodemon": "^2.0.7"
 	},
 	"devDependencies": {
