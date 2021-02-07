@@ -6,8 +6,6 @@ const secrets = require("../secrets.json");
 
 /* Upload images to imgbb, discord prefers not to get attachments. */
 
-const uploadsFilePath = "./imgbb-uploads.json";
-
 async function upload(imagePath, imageFilename, name = null) {
 	const url = "https://api.imgbb.com/1/upload";
 
@@ -17,7 +15,7 @@ async function upload(imagePath, imageFilename, name = null) {
 	console.log("upload key", secrets.imgbbKey);
 
 	console.debug("making form");
-	const form = new FormData();
+	let form = new FormData();
 	form.append("key", secrets.imgbbKey);
 	form.append("image", fs.createReadStream(imagePath), {
 		filename: imageFilename,
@@ -36,10 +34,11 @@ async function upload(imagePath, imageFilename, name = null) {
 	console.debug("Posted to ImgBB");
 
 	console.log(`${response.status} ${response.statusText}`);
+	saveToUploads(response.data);
 	return response.data;
 }
 
-async function saveToUploads(imgbbResponse) {
+async function saveToUploads(imgbbResponseData) {
 	// Cache the upload to json, get same url next time.
 	let imgbbUploads;
 	// open file
@@ -48,19 +47,19 @@ async function saveToUploads(imgbbResponse) {
 			"./libs/imgbb-uploads.json",
 			"utf8"
 		);
-		let imgbbUploads = JSON.parse(imgbbUploadsFile);
-		console.log(imgbbUploads);
+		// console.log("imgbbUploadsFile", imgbbUploadsFile);
+		imgbbUploads = JSON.parse(imgbbUploadsFile);
+		console.log("imgbbUploads length ", imgbbUploads.length);
 	} catch (error) {
 		console.error("Could not open file", error);
 		return;
 	}
-	console.log("typeof imgbbUploads: ", typeof imgbbUploads);
-	console.log("imgbbUploads: ", imgbbUploads);
 
+	// if id not in json:
 	// add img to list
-	imgbbUploads.push(digte);
+	imgbbUploads.push(imgbbResponseData);
 	console.log("pushed data to imgbbUploads");
-	console.log("imgbbUploads: ", imgbbUploads);
+	console.log("imgbbUploads length ", imgbbUploads.length);
 
 	// save file
 	const saveData = JSON.stringify(imgbbUploads, null, 2);
@@ -71,7 +70,7 @@ async function saveToUploads(imgbbResponse) {
 	}
 }
 
-async function saveTest() {
+async function testSave() {
 	const digte = {
 		data: {
 			id: "R94qvM8",
@@ -101,8 +100,17 @@ async function saveTest() {
 		success: true,
 		status: 200,
 	};
+
+	saveToUploads(digte);
+}
+
+async function testUpload() {
+	imgPath = "../resources/images/Fixion-0658-Triggered.gif";
+	imgName = "Fixion-0658-Triggered.gif";
+	upload(imgPath, imgName);
 }
 
 // saveTest();
+// testUpload();
 
 exports.upload = upload;

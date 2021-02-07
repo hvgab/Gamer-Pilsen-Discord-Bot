@@ -4,6 +4,34 @@ const this_config = require("./links.json");
 const Path = require("path");
 const Fs = require("fs");
 const Imgbb = require("../libs/Imgbb.js");
+const { SSL_OP_EPHEMERAL_RSA } = require("constants");
+
+async function downloadImage(url, filename, folderPath) {
+	// const path = Path.resolve("..", "resources", "images", filename);
+	const imgPath = Path.resolve(folderPath, filename);
+	const writer = Fs.createWriteStream(imgPath);
+
+	const response = await Axios({
+		url,
+		method: "GET",
+		responseType: "stream",
+	});
+
+	response.data.pipe(writer);
+
+	let imageResponse = {
+		filename: filename,
+		path: imgPath,
+	};
+
+	console.log("DownloadImage return: ", imageResponse);
+
+	return imageResponse;
+}
+
+function sleep(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 module.exports = {
 	name: "triggered",
@@ -11,57 +39,55 @@ module.exports = {
 	args: true,
 	aliases: ["trigger"],
 	usage: "<@user>",
-	hidden: true,
 	async execute(message, args) {
-		async function downloadImage(url, filename) {
-			const path = Path.resolve("..", "resources", "images", filename);
-			const writer = Fs.createWriteStream(path);
+		if (!args.length) return message.reply("You need to tag a user!");
+		// consts
+		const triggerImageFolder = Path.resolve(
+			"..",
+			"resources",
+			"images",
+			"avatars"
+		);
 
-			const response = await Axios({
-				url,
-				method: "GET",
-				responseType: "stream",
-			});
+		// get avatar
+		const user = message.mentions.users.first();
+		const displayAvatarURL = user.displayAvatarURL({
+			format: "png",
+			size: 128,
+		});
+		console.log("displayAvatarURL", displayAvatarURL);
 
-			response.data.pipe(writer);
+		// get api image
+		const triggerImageUrl = `https://some-random-api.ml/canvas/triggered?avatar=${displayAvatarURL}`;
+		const triggerImageFilename = `${user.username}-${user.discriminator}-Triggered.gif`;
 
-			let imageResponse = {
-				filename: filename,
-				path: path,
-			};
+		// save image
+		const triggerImage = await downloadImage(
+			triggerImageUrl,
+			triggerImageFilename,
+			triggerImageFolder
+		);
+		console.log("Saved triggerImage: ", triggerImage);
 
-			return imageResponse;
-		}
+		// Something is iffy with uploading right after save, added a sleep to bypass this.
+		console.log("Sleeping for 1 sec before upload.");
+		await sleep(1000);
 
-		if (!args.length) {
-			return message.reply("You need to tag a user!");
-		} else {
-			const user = message.mentions.users.first();
-			const displayAvatarURL = user.displayAvatarURL({
-				format: "png",
-				size: 128,
-			});
-			console.log("displayAvatarURL", displayAvatarURL);
+		// upload to imgbb
+		const imgbbData = await Imgbb.upload(
+			Path.resolve(triggerImageFolder, triggerImageFilename),
+			triggerImageFilename
+		);
+		console.log("Imgbb id: ", imgbbData.data.id);
 
-			const triggerImageUrl = `https://some-random-api.ml/canvas/triggered?avatar=${displayAvatarURL}`;
-			const triggerImageFilename = `${user.username}-${user.discriminator}-Triggered.gif`;
-			const triggerImage = await downloadImage(
-				triggerImageUrl,
-				triggerImageFilename
-			);
-			console.log(triggerImage);
-
-			// upload to imgbb?
-
-			// Attach gif directly
-			console.log("attaching gif directly");
-			let attachment = new Discord.MessageAttachment(
-				triggerImage.path,
-				triggerImage.filename
-			);
-			const sentMessage = await message.reply(attachment);
-
-			console.log("sentMessage", sentMessage);
-		}
+		// Respond
+		console.log("attaching gif with imgbb");
+		console.log("imgbbData: ", imgbbData.success, imgbbData.status);
+		const msg = [];
+		msg.push(`**${imgbbData.data.title}**`);
+		msg.push(imgbbData.data.image.url);
+		const sentMessage = await message.reply(msg);
+		console.log("sentMessage", sentMessage.content);
+		return;
 	},
 };
