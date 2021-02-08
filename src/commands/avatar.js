@@ -7,27 +7,18 @@ const Imgbb = require("../libs/Imgbb.js");
 
 module.exports = {
 	name: "avatar",
-	// description: "",
-	args: true,
-	// aliases: ["trigger"],
-	usage: "<@user>",
-	hidden: true,
+	usage: "[@user]",
 	execute(message, args) {
 		let user;
 		if (!args.length) {
 			user = message.author;
+		} else {
+			user = message.mentions.users.first();
 		}
-		user = message.mentions.users.first();
 		const displayAvatarURL = user.displayAvatarURL({
 			format: "png",
 			size: 128,
 		});
-		console.log(
-			"displayAvatarURL",
-			user.displayAvatarURL({
-				format: "png",
-				size: 512,
-			})
-		);
+		message.reply(displayAvatarURL);
 	},
 };

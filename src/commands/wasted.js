@@ -42,12 +42,7 @@ module.exports = {
 	async execute(message, args) {
 		if (!args.length) return message.reply("You need to tag a user!");
 		// consts
-		const triggerImageFolder = Path.resolve(
-			"..",
-			"resources",
-			"images",
-			"avatars"
-		);
+		const imageFolder = Path.resolve("..", "resources", "images", "avatars");
 
 		// get avatar
 		const user = message.mentions.users.first();
@@ -58,16 +53,12 @@ module.exports = {
 		console.log("displayAvatarURL", displayAvatarURL);
 
 		// get api image
-		const triggerImageUrl = `https://some-random-api.ml/canvas/wasted?avatar=${displayAvatarURL}`;
-		const triggerImageFilename = `${user.username}-${user.discriminator}-Triggered.gif`;
+		const imageUrl = `https://some-random-api.ml/canvas/wasted?avatar=${displayAvatarURL}`;
+		const imageFilename = `${user.username}-${user.discriminator}-Wasted.gif`;
 
 		// save image
-		const triggerImage = await downloadImage(
-			triggerImageUrl,
-			triggerImageFilename,
-			triggerImageFolder
-		);
-		console.log("Saved triggerImage: ", triggerImage);
+		const image = await downloadImage(imageUrl, imageFilename, imageFolder);
+		console.log("Saved image: ", image);
 
 		// Something is iffy with uploading right after save, added a sleep to bypass this.
 		console.log("Sleeping for 1 sec before upload.");
@@ -75,8 +66,8 @@ module.exports = {
 
 		// upload to imgbb
 		const imgbbData = await Imgbb.upload(
-			Path.resolve(triggerImageFolder, triggerImageFilename),
-			triggerImageFilename
+			Path.resolve(imageFolder, imageFilename),
+			imageFilename
 		);
 		console.log("Imgbb id: ", imgbbData.data.id);
 

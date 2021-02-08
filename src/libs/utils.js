@@ -2,6 +2,29 @@
 const Discord = require("discord.js");
 const JSAsciiTable = require("./js-ascii-table.js");
 
+async function downloadImage(url, filename, folderPath) {
+	// const path = Path.resolve("..", "resources", "images", filename);
+	const imgPath = Path.resolve(folderPath, filename);
+	const writer = Fs.createWriteStream(imgPath);
+
+	const response = await Axios({
+		url,
+		method: "GET",
+		responseType: "stream",
+	});
+
+	response.data.pipe(writer);
+
+	let imageResponse = {
+		filename: filename,
+		path: imgPath,
+	};
+
+	console.log("DownloadImage return: ", imageResponse);
+
+	return imageResponse;
+}
+
 function getDeveloper(client) {
 	const developer = new Discord.User(client, {
 		id: "152026317016137728",
@@ -50,3 +73,4 @@ function makeTable(tableData, title = "Telialigaen") {
 exports.getDeveloper = getDeveloper;
 exports.sendErrorToDev = sendErrorToDev;
 exports.makeTable = makeTable;
+exports.downloadImage = downloadImage;
