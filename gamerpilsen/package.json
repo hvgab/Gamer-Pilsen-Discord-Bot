@@ -10,7 +10,7 @@
 		"envy": "^2.0.0",
 		"gamedig": "^2.0.24",
 		"luxon": "^1.25.0",
-		"nodemon": "^2.0.7"
+		"nodemon": "^2.0.12"
 	},
 	"devDependencies": {
 		"@cucumber/cucumber": "^7.0.0",

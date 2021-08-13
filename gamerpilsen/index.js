@@ -12,66 +12,148 @@ const utils = require("./libs/utils");
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const commandFiles = fs
-	.readdirSync("./commands")
-	.filter((file) => file.endsWith(".js"));
+  .readdirSync("./commands")
+  .filter((file) => file.endsWith(".js"));
 
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.name, command);
+}
+
+client.auto_commands = new Discord.Collection();
+const autoCommandFiles = fs.readdirSync("./auto_commands").filter((file) => file.endsWith(".js"));
+for (const auto_command_file of autoCommandFiles) {
+  const command = require(`./auto_commands/${auto_command_file}`);
+  client.auto_commands.set(command.name, command);
 }
 
 // Bot
 client.once("ready", () => {
-	console.log(`\n\n\nLogged in as ${client.user.tag}!\n\n\n`);
+  console.log(`\n\n\nBot ${client.user.tag} reporting for duty!\n\n\n`);
+});
+
+// New interaction event
+client.on('interactionCreate', interaction => {
+  console.log("interaction start");
+  console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.`);
+  console.log(interaction);
+  console.log("interaction end");
 });
 
 // Message command handler
 client.on("message", (message) => {
-	// Commands must start with prefix, and not be sent by bot.
-	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-	// get commmandName and args from message
-	// TODO: Dont split args like -> "this has double quotes around it"
-	const args = message.content.slice(prefix.length).trim().split(/ +/);
-	const commandName = args.shift().toLowerCase();
+  console.log("\n");
+  console.log("#####");
+  console.log(`New Message: ${message.content}`);
 
-	// Find command
-	const command =
-		client.commands.get(commandName) ||
-		client.commands.find(
-			(cmd) => cmd.aliases && cmd.aliases.includes(commandName)
-		);
+  console.log("message author: " + message.author)
 
-	if (!command)
-		return message.reply("That doesn't look like one of my commands.");
+  let is_command = false;
+  let is_auto_command = false;
+  let chosen_command;
+  let args;
 
-	if (command.args && !args.length) {
-		let reply = `This command requires arguments. See \`${prefix}help ${commandName}\` for more info.`;
-		return message.reply(reply);
-	}
+  // Check if command
+  // Commands must start with prefix, and not be sent by bot.
+  if (message.content.startsWith(prefix)) {
+    is_command = true;
+  }
 
-	try {
-		command.execute(message, args);
-	} catch (error) {
-		console.error(error);
-		utils.sendErrorToDev(message, error, client);
-		// console.error(error);
-		// error_msg = [];
-		// error_msg.push(`This bot has trouble: ${client.user.username} (${client.user.id})`);
-		// if (message.guild) error_msg.push(`Guild: ${message.guild.name}`);
-		// error_msg.push(`User: ${message.author.username}`);
-		// error_msg.push(`Channel: ${message.channel}`);
-		// error_msg.push(`Message: ${message}`);
-		// error_msg.push(`Error: ${error}`);
-		// console.debug(error_msg);
-		// utils.getDeveloper(client).send(error_msg);
-	}
+  // Check if auto-command
+  client.auto_commands.some(command => {
+    console.log(`command: ${command.name}`);
+
+    let regex = new RegExp(command.regex);
+    console.log(`regex: ${regex}`);
+    console.log(`re test: ${regex.test(message.content)}`);
+
+    if (regex.test(message.content)) {
+      chosen_command = command;
+      is_auto_command = true;
+    }
+  });
+
+  console.log(`is_command: ${is_command}`);
+  console.log(`is_auto_command: ${is_auto_command}`);
+
+  if (is_command == false && is_auto_command == false) {
+    console.log("Not command, not auto-command. Doing nothing");
+    return;
+  }
+
+  // get commmandName and args from message
+  // TODO: Dont split args like -> "this has double quotes around it"
+  if (is_command == true) {
+    console.log("is command.");
+    let commandName;
+    if (message.content.startsWith(prefix)) {
+      args = message.content.slice(prefix.length).trim().split(/ +/);
+      commandName = args.shift().toLowerCase();
+      console.log(`commandName: ${commandName}`);
+      console.log(`args: ${args}`);
+    }
+    // Find command
+    console.log(`client.commands: ${client.commands}`);
+    chosen_command =
+      client.commands.get(commandName) ||
+      client.commands.find(
+        (cmd) => cmd.aliases && cmd.aliases.includes(commandName)
+      );
+
+    if (!chosen_command)
+      return message.reply("That doesn't look like one of my commands.");
+
+    if (chosen_command.args && !args.length) {
+      let reply = `This command requires arguments. See \`${prefix}help ${commandName}\` for more info.`;
+      return message.reply(reply);
+    }
+
+    console.log(`chosen_command: ${chosen_command}`);
+  }
+
+  // Auto Commands
+  // if (is_auto_command == true) {
+  //   client.auto_commands.forEach(command => {
+  //     console.log(command);
+  //     let re = command.regex;
+  //     if (re.test()) {
+  //       command = command;
+  //     }
+  //   });
+  // }
+
+
+  console.log("Executing command");
+  console.log(`command: ${chosen_command.name}`);
+
+  console.log("Create command object from class")
+  chosen_command = new chosen_command.command(message, args)
+
+  try {
+    chosen_command.execute();
+  } catch (error) {
+    console.error(error);
+    utils.sendErrorToDev(message, error, client);
+    // console.error(error);
+    // error_msg = [];
+    // error_msg.push(`This bot has trouble: ${client.user.username} (${client.user.id})`);
+    // if (message.guild) error_msg.push(`Guild: ${message.guild.name}`);
+    // error_msg.push(`User: ${message.author.username}`);
+    // error_msg.push(`Channel: ${message.channel}`);
+    // error_msg.push(`Message: ${message}`);
+    // error_msg.push(`Error: ${error}`);
+    // console.debug(error_msg);
+    // utils.getDeveloper(client).send(error_msg);
+  }
 });
 
 if (process.argv.length > 2) {
-	if (process.argv[2].toLowerCase() == "dev") {
-		client.login(secrets.token_dev);
-	}
+  if (process.argv[2].toLowerCase() == "dev") {
+    client.login(secrets.token_dev);
+  }
+} else if (config.env == "dev") {
+  client.login(secrets.token_dev);
 } else {
-	client.login(secrets.token);
+  client.login(secrets.token);
 }
