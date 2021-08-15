@@ -127,11 +127,11 @@ client.on("message", (message) => {
   console.log("Executing command");
   console.log(`command: ${chosen_command.name}`);
 
-  console.log("Create command object from class")
-  chosen_command = new chosen_command.command(message, args)
+  // console.log("Create command object from class")
+  // chosen_command = chosen_command.execute(message, args)
 
   try {
-    chosen_command.execute();
+    chosen_command.execute(message, args);
   } catch (error) {
     console.error(error);
     utils.sendErrorToDev(message, error, client);
