@@ -1,5 +1,5 @@
 {
-  "env": "dev",
+  "env": "prod",
   "prefix": "!",
   "colors": {
     "gp_orange": "#cd6818"

@@ -312,7 +312,9 @@ class Command {
     // Author
     let author_name = "GP-Botten@Esportal.com"
     let author_icon = 'https://gamerpilsen.no/wp-content/uploads/2020/11/LOGO.png'
-    // let author_url = 'https://gabbeh.no/gp-bot'
+    let author_url = null
+    // let author_url = 'https://github.io/hvgab/gp-bot'
+
 
     // players
     let players = []
@@ -514,5 +516,8 @@ module.exports = {
   // regex: '.*https://esportal.com/gather/(\d+).*',
   args: false,
   hidden: true,
-  command: Command
+  execute(message, args) {
+    myCommand = new Command(message, args);
+    myCommand.execute()
+  }
 }

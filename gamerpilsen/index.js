@@ -13,7 +13,7 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const commandFiles = fs
   .readdirSync("./commands")
-  .filter((file) => file.endsWith(".js"));
+  .filter((file) => file.endsWith(".js") && !file.startsWith("_"));
 
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
@@ -42,6 +42,9 @@ client.on('interactionCreate', interaction => {
 
 // Message command handler
 client.on("message", (message) => {
+
+  // Don't parse bot messages
+  if (message.author.bot) return;
 
   console.log("\n");
   console.log("#####");
@@ -113,39 +116,26 @@ client.on("message", (message) => {
   }
 
   // Auto Commands
-  // if (is_auto_command == true) {
-  //   client.auto_commands.forEach(command => {
-  //     console.log(command);
-  //     let re = command.regex;
-  //     if (re.test()) {
-  //       command = command;
-  //     }
-  //   });
-  // }
-
+  if (is_auto_command == true) {
+    client.auto_commands.forEach(command => {
+      console.log(command);
+      let re = command.regex;
+      if (re.test(message.content)) {
+        chosen_command = command;
+      }
+    });
+  }
 
   console.log("Executing command");
   console.log(`command: ${chosen_command.name}`);
-
-  // console.log("Create command object from class")
-  // chosen_command = chosen_command.execute(message, args)
 
   try {
     chosen_command.execute(message, args);
   } catch (error) {
     console.error(error);
     utils.sendErrorToDev(message, error, client);
-    // console.error(error);
-    // error_msg = [];
-    // error_msg.push(`This bot has trouble: ${client.user.username} (${client.user.id})`);
-    // if (message.guild) error_msg.push(`Guild: ${message.guild.name}`);
-    // error_msg.push(`User: ${message.author.username}`);
-    // error_msg.push(`Channel: ${message.channel}`);
-    // error_msg.push(`Message: ${message}`);
-    // error_msg.push(`Error: ${error}`);
-    // console.debug(error_msg);
-    // utils.getDeveloper(client).send(error_msg);
   }
+
 });
 
 if (process.argv.length > 2) {
