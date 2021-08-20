@@ -110,7 +110,7 @@ class SteamServer {
     // Title
     let title = this.server.name;
     // Hvis det er fredag, custom fredagsboot tittel
-    if (new Date().getDay() == 5 && args[0] == 2) {
+    if (new Date().getDay() == 5 && this.args[0] == 2) {
       title = ":beers: FREDAGSBOOTEN :beers:";
     }
     embed.setTitle(title);
