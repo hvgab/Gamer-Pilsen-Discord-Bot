@@ -1,11 +1,14 @@
 {
-  "env": "prod",
-  "prefix": "!",
-  "colors": {
-    "gp_orange": "#cd6818"
-  },
-  "invite_link": "https://discord.com/oauth2/authorize?client_id=802661168215883836&scope=bot",
-  "invite_link_dev": "https://discord.com/oauth2/authorize?client_id=804820254437933086&scope=bot",
-  "author_icon": "https://gamerpilsen.no/wp-content/uploads/2020/11/LOGO.png",
-  "author_url": "https://gabbeh.no/gp-bot"
+	"env": "prod",
+	"prefix": "!",
+	"colors": {
+		"gp_orange": "#cd6818"
+	},
+	"invite_link": "https://discord.com/oauth2/authorize?client_id=802661168215883836&scope=bot",
+	"invite_link_dev": "https://discord.com/oauth2/authorize?client_id=804820254437933086&scope=bot",
+	"author_icon": "https://gamerpilsen.no/wp-content/uploads/2020/11/LOGO.png",
+	"author_url": "https://gabbeh.no/gp-bot",
+	"clientId": "804820254437933086",
+	"guildId": "802665444321656864",
+	"token": "ODA0ODIwMjU0NDM3OTMzMDg2.YBR5RQ.Y62zMVSiX0RQbbUzqZLxaoub_zg"
 }
