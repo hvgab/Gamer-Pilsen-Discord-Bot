@@ -176,7 +176,7 @@ class Command {
 
     this.bot_message = null;
 
-    this.regex = /https:\/\/esportal.com\/gather\/(\d+)/;
+    this.regex = /https:\/\/esportal.com\/.*\/gather\/(\d+)/;
     this.gather_id;
     this.gather;
     this.match;
@@ -511,9 +511,8 @@ class Command {
 
 module.exports = {
   name: "esportal_gather",
-  regex: /https:\/\/esportal.com\/gather\/(\d+)/,
+  regex: /https:\/\/esportal.com\/no\/gather\/(\d+)/,
   // regex: "https://esportal.com/gather/(\d+)",
-  // regex: '.*https://esportal.com/gather/(\d+).*',
   args: false,
   hidden: true,
   execute(message, args) {
