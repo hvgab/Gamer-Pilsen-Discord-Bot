@@ -37,7 +37,9 @@ class SteamServer {
       console.log(msg);
       this.message.reply(msg);
       return;
-    };
+    } else {
+      console.log(this.args[0] + "in server config.")
+    }
 
     this.host = steam_servers_config[this.args[0]]["ip"];
     this.port = steam_servers_config[this.args[0]]["port"];
@@ -150,9 +152,10 @@ class SteamServer {
     console.log(`this.sent_message === null: `)
     console.log(this.sent_message === null)
 
-    // First message
+    // First messagew 
     if (this.sent_message === null) {
-      this.sent_message = await this.message.channel.send({ embed: this.embed });
+      let sent_message = await this.message.channel.send({ embed: this.embed });
+      this.sent_message = sent_message;
 
       if (new Date().getDay() == 5) {
         Promise.all([
@@ -165,11 +168,12 @@ class SteamServer {
           msg.react("🧃"),
         ]).catch(() => console.error("One Of The Emojis failed to react"));
       }
-
-      return;
     } else {
       // Update/Edit/Refresh message
-      let sent_message = await this.sent_message.edit({ embeds: [this.embed] });
+      console.log(this.embed)
+      console.log("sent message: ")
+      console.log(this.sent_message);
+      let sent_message = await this.sent_message.edit({ embed: this.embed });
       this.sent_message = sent_message
     }
   }

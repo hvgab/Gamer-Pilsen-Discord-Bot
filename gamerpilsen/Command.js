@@ -17,7 +17,7 @@ class BaseCommand {
     this.waitTime = 15 * 1000
 
     // Regex for "auto-commands" reacting to normal chat without command prefix
-    this.regex = /https:\/\/esportal.com\/gather\/(\d+)/;
+    this.regex = /https:\/\/esportal.com\/.*\/gather\/(\d+)/;
 
     this.reply = "";
     this.embeds = [];
