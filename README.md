@@ -1,5 +1,7 @@
 # Gamer-Pilsen Discord Bot
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/606d1026b1bc4634ab35490887ad1b0a)](https://app.codacy.com/gh/hvgab/Gamer-Pilsen-Discord-Bot?utm_source=github.com&utm_medium=referral&utm_content=hvgab/Gamer-Pilsen-Discord-Bot&utm_campaign=Badge_Grade)
+
 For [GamerPilsen](https://gamerpilsen.no) by [Gabbeh](https://gabbeh.no)
 
 Grade
